@@ -11,6 +11,13 @@ jobs:
       matrix:
         node-version: [1, 20]
         os: [ubuntu-latest, windows-latest]
+        include:
+          - node-version: 18
+            os: ubuntu-lastest
+        exclude:
+          - node-version: 1
+            os: windows-latest
+
     runs-on: ${{ matrix.os }}
     steps:
       - name: Clone Project
