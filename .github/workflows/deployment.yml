@@ -1,0 +1,31 @@
+name: Matrix Demo
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+jobs:
+  deploy:
+    continue-on-error: true ## will continue even if other jobs fail
+    strategy:
+      matrix:
+        node-version: [1, 20]
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Clone Project
+        uses: actions/checkout@v5
+      - name: Install Node js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - name: Install Dependencies
+        run: pnpm install
+      - name: Build the project
+        run: pnpm run build
+      - name: Deploy
+        run: echo "Deployed Succesfully"s
